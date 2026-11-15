@@ -1,0 +1,11 @@
+flowchart LR
+    C[Postman / panel admin] -->|POST reportes/pedidos| A[API Laravel · productor]
+    A -->|202 Accepted + correlation_id| C
+    A -->|JSON persistente · message_id + correlation_id| B[(RabbitMQ)]
+    B --> Q[nexo.reportes.pedidos]
+    Q --> W[Consumidor independiente]
+    W -->|genera resumen ficticio| R[JSON de reporte + log]
+    W -->|ACK tras guardar| Q
+    W -. error .-> DQ[nexo.reportes.pedidos.dlq]
+    A --> S[Endpoint síncrono]
+    S -->|200 después de generar| C

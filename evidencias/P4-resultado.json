@@ -1,0 +1,19 @@
+{
+  "caso": "P4",
+  "entrada": {
+    "solicitado_por": 7,
+    "periodo_desde": "2026-11-01"
+  },
+  "http_status": 422,
+  "response_time_ms": 15.93,
+  "respuesta": {
+    "success": false,
+    "message": "Los datos proporcionados no son validos.",
+    "errors": {
+      "periodo_hasta": [
+        "El campo periodo_hasta es obligatorio."
+      ]
+    }
+  },
+  "x_correlation_id": null
+}

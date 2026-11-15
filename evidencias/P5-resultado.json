@@ -1,0 +1,37 @@
+{
+  "caso": "P5",
+  "entrada": {
+    "solicitado_por": 7,
+    "periodo_desde": "2026-11-01",
+    "periodo_hasta": "2026-11-30",
+    "correlation_id": "55555555-5555-4555-8555-555555555555"
+  },
+  "http_status": 200,
+  "response_time_ms": 514.26,
+  "respuesta": {
+    "success": true,
+    "message": "Reporte generado antes de responder.",
+    "data": {
+      "message_id": "103a1a57-16e6-4eeb-a041-8f461f8dcdf1",
+      "correlation_id": "55555555-5555-4555-8555-555555555555",
+      "estado": "PROCESADO",
+      "duracion_procesamiento_ms": 502.42,
+      "reporte": {
+        "reporte_id": "6551c139-e2c5-4aaa-acfb-a25856950ffb",
+        "solicitado_por": 7,
+        "periodo": {
+          "desde": "2026-11-01",
+          "hasta": "2026-11-30"
+        },
+        "cantidad_pedidos": 3,
+        "total_usd": "92.49",
+        "correlation_id": "55555555-5555-4555-8555-555555555555",
+        "message_id": "103a1a57-16e6-4eeb-a041-8f461f8dcdf1",
+        "estado": "PROCESADO",
+        "canal": "SINCRONICO",
+        "procesado_en": "2026-11-15T22:31:21+00:00"
+      }
+    }
+  },
+  "x_correlation_id": "55555555-5555-4555-8555-555555555555"
+}

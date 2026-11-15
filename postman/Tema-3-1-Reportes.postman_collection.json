@@ -1,0 +1,234 @@
+{
+  "info": {
+    "_postman_id": "51b3284e-72cb-4c33-ae9b-000000000031",
+    "name": "Tema 3.1 - Reportes de pedidos asíncronos",
+    "description": "Pruebas P1-P5 del productor, cola RabbitMQ y consumidor de reportes NexoCommerce.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8011/api/practica/v1"
+    },
+    {
+      "key": "correlationP1",
+      "value": ""
+    },
+    {
+      "key": "correlationP2",
+      "value": ""
+    },
+    {
+      "key": "correlationP3",
+      "value": ""
+    },
+    {
+      "key": "correlationSync",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "P1 - Válido con consumidor activo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"solicitado_por\": 7,\n  \"periodo_desde\": \"2026-11-01\",\n  \"periodo_hasta\": \"2026-11-30\",\n  \"correlation_id\": \"{{$guid}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/reportes/pedidos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('La API acepta la solicitud (202)', function () { pm.response.to.have.status(202); });",
+              "const data = pm.response.json().data;",
+              "pm.collectionVariables.set('correlationP1', data.correlation_id);",
+              "pm.test('Devuelve estado ENCOLADO y correlación', function () { pm.expect(data.estado).to.eql('ENCOLADO'); pm.expect(data.correlation_id).to.be.a('string'); });",
+              "console.log('P1 correlation_id:', data.correlation_id, 'responseTime:', pm.response.responseTime, 'ms');"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "P2 - Consumidor detenido, mensaje pendiente",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"solicitado_por\": 7,\n  \"periodo_desde\": \"2026-11-01\",\n  \"periodo_hasta\": \"2026-11-30\",\n  \"correlation_id\": \"{{$guid}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/reportes/pedidos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('La API acepta aunque el consumidor esté detenido (202)', function () { pm.response.to.have.status(202); });",
+              "const data = pm.response.json().data;",
+              "pm.collectionVariables.set('correlationP2', data.correlation_id);",
+              "pm.test('El estado inicial es ENCOLADO', function () { pm.expect(data.estado).to.eql('ENCOLADO'); });",
+              "console.log('P2 correlation_id:', data.correlation_id, 'responseTime:', pm.response.responseTime, 'ms');"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "P3 - Válido para comprobar correlación",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"solicitado_por\": 7,\n  \"periodo_desde\": \"2026-11-01\",\n  \"periodo_hasta\": \"2026-11-30\",\n  \"correlation_id\": \"{{$guid}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/reportes/pedidos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('La API acepta (202)', function () { pm.response.to.have.status(202); });",
+              "const data = pm.response.json().data;",
+              "pm.collectionVariables.set('correlationP3', data.correlation_id);",
+              "pm.test('La correlación es UUID', function () { pm.expect(data.correlation_id).to.match(/^[0-9a-f-]{36}$/i); });",
+              "console.log('P3 correlation_id:', data.correlation_id, 'responseTime:', pm.response.responseTime, 'ms');"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "P4 - Inválido: falta periodo_hasta",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"solicitado_por\": 7,\n  \"periodo_desde\": \"2026-11-01\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/reportes/pedidos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('La validación rechaza la solicitud (422)', function () { pm.response.to.have.status(422); });",
+              "pm.test('Explica el campo faltante', function () { pm.expect(pm.response.json().errors).to.have.property('periodo_hasta'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "P5 - Síncrono: el reporte termina antes de responder",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"solicitado_por\": 7,\n  \"periodo_desde\": \"2026-11-01\",\n  \"periodo_hasta\": \"2026-11-30\",\n  \"correlation_id\": \"{{$guid}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/reportes/pedidos/sincrono"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('El reporte síncrono ya terminó (200)', function () { pm.response.to.have.status(200); });",
+              "const data = pm.response.json().data;",
+              "pm.collectionVariables.set('correlationSync', data.correlation_id);",
+              "pm.test('El trabajo queda procesado y tarda al menos 500 ms', function () { pm.expect(data.estado).to.eql('PROCESADO'); pm.expect(data.duracion_procesamiento_ms).to.be.at.least(500); });",
+              "console.log('Síncrono responseTime:', pm.response.responseTime, 'ms; procesamiento:', data.duracion_procesamiento_ms, 'ms');"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

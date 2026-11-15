@@ -1,0 +1,22 @@
+{
+  "caso": "P2",
+  "entrada": {
+    "solicitado_por": 7,
+    "periodo_desde": "2026-11-01",
+    "periodo_hasta": "2026-11-30",
+    "correlation_id": "22222222-2222-4222-8222-222222222222"
+  },
+  "http_status": 202,
+  "response_time_ms": 53.83,
+  "respuesta": {
+    "success": true,
+    "message": "Solicitud recibida; el reporte se procesará en segundo plano.",
+    "data": {
+      "reporte_id": "1aee03f0-7ed9-4595-9324-dffddb3483dc",
+      "message_id": "0d379dd7-409e-4fd1-ab04-65b1449e554d",
+      "correlation_id": "22222222-2222-4222-8222-222222222222",
+      "estado": "ENCOLADO"
+    }
+  },
+  "x_correlation_id": "22222222-2222-4222-8222-222222222222"
+}

@@ -1,0 +1,2 @@
+Tras docker compose start consumer: correlation_id 22222222-2222-4222-8222-222222222222 aparece como PROCESADO en consumidor.log.
+Cola nexo.reportes.pedidos: messages_ready=0; messages_unacknowledged=0.

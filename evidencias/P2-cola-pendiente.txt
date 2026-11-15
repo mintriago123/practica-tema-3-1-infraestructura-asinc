@@ -1,0 +1,3 @@
+Consumidor detenido antes de publicar P2.
+La respuesta de la API fue HTTP 202 (ENCOLADO).
+RabbitMQ: nexo.reportes.pedidos | messages_ready=1 | messages_unacknowledged=0
