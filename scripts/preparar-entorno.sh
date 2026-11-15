@@ -52,4 +52,4 @@ mkdir -p "${PRACTICA_DIR}/runtime"
 docker run --rm --mount "type=bind,src=${RUNTIME_BACKEND},dst=/app" --workdir /app composer:2 \
   require 'php-amqplib/php-amqplib:^3.7' --ignore-platform-req=ext-sockets --no-interaction --no-progress
 
-echo "Módulo preparado en ${RUNTIME_BACKEND}; backend original sin cambios."
+echo "Entorno de práctica preparado en ${RUNTIME_BACKEND}."

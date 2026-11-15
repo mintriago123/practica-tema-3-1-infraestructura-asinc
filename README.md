@@ -2,7 +2,7 @@
 
 **Proyecto:** NexoCommerce · **Proceso:** generar un reporte agregado de pedidos para administración.
 
-La solicitud síncrona genera y devuelve el reporte dentro de la petición. La ruta asíncrona publica la solicitud en RabbitMQ y responde `202 Accepted`; el consumidor la procesa en segundo plano. Elegí reportes de pedidos porque las notificaciones reales se insertan dentro de la transacción del pedido y no deben encolarse según la especificación del proyecto. Este módulo individual usa pedidos ficticios y no cambia el backend original.
+La solicitud síncrona genera y devuelve el reporte dentro de la petición. La ruta asíncrona publica la solicitud en RabbitMQ y responde `202 Accepted`; el consumidor la procesa en segundo plano. El reporte agregado de pedidos es un proceso apropiado para ejecutarse después de aceptar la solicitud, con datos ficticios para verificar el cálculo.
 
 ## Flujo y mensaje
 
@@ -47,7 +47,7 @@ El diagrama también está en [diagram.mmd](diagram.mmd). Código del productor,
 
 ## Ejecución local
 
-La copia del backend usada por Docker está en `runtime/backend`; se preparó sin copiar `.env`. Si recibiste la carpeta sin `runtime/backend`, ejecuta desde la carpeta de la práctica:
+El runtime Laravel usado por Docker se prepara en `runtime/backend` sin copiar `.env`. Si recibiste la carpeta sin `runtime/backend`, ejecuta desde la carpeta de la práctica:
 
 ```bash
 NEXO_BACKEND_DIR=/ruta/a/NexoCommerce/backend ./scripts/preparar-entorno.sh
